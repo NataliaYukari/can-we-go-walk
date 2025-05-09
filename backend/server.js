@@ -8,9 +8,9 @@ const PORT = 5000
 app.use(cors());
 app.use(express.json());
 
-// Requisition to external API
 app.get('/external-data', async (req, res) => {
     try {
+        //const response = await axios.get('https://api.hgbrasil.com/weather?format=json-cors&key=1c4887be');
         const response = await axios.get('https://api.hgbrasil.com/weather?format=json-cors');
 
         const weather = response.data.results;

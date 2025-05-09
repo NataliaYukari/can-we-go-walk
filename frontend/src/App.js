@@ -11,16 +11,24 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/external-data')
-      .then(response => {
-        setWeather(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Error in fetching data", error);
-        setLoading(false);
-      });
-    });
+    const getData = async () => {
+      try {
+        const result = await axios.get('http://localhost:5000/external-data');
+          setWeather(result.data);
+          setLoading(false);
+      } catch(error) {
+          console.error("Error in fetching data", error);
+      } finally {
+          setLoading(false);
+      }
+    };
+
+    getData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading weather data...</p>
+  }
 
   return (
     <>
@@ -34,9 +42,9 @@ function App() {
     >
       <Header></Header>
       <br></br>
-      <WeatherNow weather= {weather}></WeatherNow>
+      <WeatherNow weather= {weather} loading= {loading}></WeatherNow>
       <br></br>
-      <IsSafe></IsSafe>
+      <IsSafe weather= {weather}></IsSafe>
     </Box>
     </>
   );
